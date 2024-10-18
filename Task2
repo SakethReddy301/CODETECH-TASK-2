@@ -1,0 +1,44 @@
+#include <dht.h>          // Including library for DHT
+#include <LiquidCrystal.h> // Library for LCD
+
+LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
+#define dht_dpin 12
+dht DHT;
+
+byte degree[8] = {
+  0b00011,
+  0b00011,
+  0b00000,
+  0b00000,
+  0b00000,
+  0b00000,
+  0b00000,
+  0b00000
+};
+
+void setup() {
+  lcd.begin(16, 2);
+  lcd.createChar(1, degree);
+  lcd.clear();
+  lcd.print("   Humidity   ");
+  lcd.setCursor(0,1);
+  lcd.print("  Measurement ");
+  delay(2000);
+  lcd.clear();
+  lcd.print("Circuit Digest ");
+  delay(2000);
+}
+
+void loop() {
+  DHT.read11(dht_dpin);
+  lcd.setCursor(0,0);
+  lcd.print("Humidity: ");
+  lcd.print(DHT.humidity);   // Display Humidity
+  lcd.print(" %");
+  lcd.setCursor(0,1);
+  lcd.print("Temperature:");
+  lcd.print(DHT.temperature); // Display Temperature
+  lcd.write(1);
+  lcd.print("C");
+  delay(500);
+}
